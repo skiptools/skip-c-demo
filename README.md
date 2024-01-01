@@ -1,9 +1,34 @@
 # SkipCDemo
 
-This is a free [Skip](https://skip.tools) Swift/Kotlin library project containing the following modules:
+This is a [Skip](https://skip.tools) Swift/Kotlin library project demonstrating the use C code from Swift on both Darwin (iOS & macOS) and Android. It utilized Swift's built-in C integration on the Swift side, and takes advantage of gradle's support for building with the Android NDK using the cmake build tool.
 
-SkipCDemo
-LibCLibrary
+Calling C from the transpiled Kotlin is enabled by creating a Java Native Access (JNA) direct mapping class containing the library's functions, marked with `SKIP EXTERN` to cause the Skip transpiler to annotate the functions so JNA lines them up with the equivalent C functions.
+
+This project can used as a starting point for integrating C/C++ code into a dual-platform Skip app. 
+
+## Project Structure
+
+```plaintext
+.
+├── Package.swift
+├── Sources
+│   ├── LibCLibrary
+│   │   ├── CMakeLists.txt
+│   │   ├── include
+│   │   │   └── demo.h
+│   │   └── src
+│   │       └── demo.c
+│   └── SkipCDemo
+│       ├── Skip
+│       │   └── skip.yml
+│       └── SkipCDemo.swift
+└── Tests
+    └── SkipCDemoTests
+        ├── Skip
+        │   └── skip.yml
+        ├── SkipCDemoTests.swift
+        └── XCSkipTests.swift
+```
 
 ## Building
 
