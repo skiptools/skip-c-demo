@@ -1,8 +1,8 @@
 # SkipCDemo
 
-This is a [Skip](https://skip.tools) Swift/Kotlin library project demonstrating the use C code from Swift on both Darwin (iOS & macOS) and Android. It utilized Swift's built-in C integration on the Swift side, and takes advantage of gradle's support for building with the Android NDK using the cmake build tool.
+This is a [Skip](https://skip.tools) Swift/Kotlin library project demonstrating the use of C code from Swift on both Darwin (iOS & macOS) and Android. It utilizes Swift's built-in C integration on the Swift side, and takes advantage of gradle's support for building with the Android NDK using the cmake build tool on the Kotlin side. 
 
-Calling C from the transpiled Kotlin is enabled by creating a Java Native Access (JNA) direct mapping class containing the library's functions, marked with `SKIP EXTERN` to cause the Skip transpiler to annotate the functions so JNA lines them up with the equivalent C functions.
+The C code is called from the transpiled Kotlin using Java Native Access (JNA). A JNA direct mapping class `SkipCDemo.swift` contains the library's functions, marked with `SKIP EXTERN` to cause the Skip transpiler to annotate the functions so JNA lines them up with the equivalent C functions.
 
 This project can used as a starting point for integrating C/C++ code into a dual-platform Skip app. 
 
@@ -29,6 +29,25 @@ This project can used as a starting point for integrating C/C++ code into a dual
         ├── SkipCDemoTests.swift
         └── XCSkipTests.swift
 ```
+
+## Implementation Details
+
+Running `swift test` will run the Swift tests as well as the transpiled Kotlin tests against the native library's declared functions.
+
+The `LibCLibrary` Swift target builds a `SkipCDemo.framework` for Xcode or `libSkipCDemo.dylib` for SwiftPM. These libraries are built for the host system (macOS, either ARM or Intel), and when testing the `SkipCDemoTests` target, the correct local shared library is linked, and so the Robolectric JVM tests use the same shared library that is used by the Swift tests.
+
+When building and testing for Android (either the emulator or device), the generated gradle contains the `externalNativeBuild` clause, directing it to use the `CMakeLists.txt` to build the native libraries for each of the supported Android NDK targets. The resulting `LibCLibrary.aar` archive will look something like:
+
+```plaintext
+classes.dex
+lib/arm64-v8a/libclibrary.so
+lib/armeabi-v7a/libclibrary.so
+lib/x86/libclibrary.so
+lib/x86_64/libclibrary.so
+AndroidManifest.xml
+resources.arsc
+```
+
 
 ## Building
 
