@@ -48,11 +48,50 @@ AndroidManifest.xml
 resources.arsc
 ```
 
+## Project Structure
+
+The target definition for a native target in the `Package.swift` file must contain only
+`.c` and `.cpp` source files; it is not permitted to mix in `.swift` files.
+In addition, the target containing the native libraries must declare a `publicHeadersPath`
+and add the `skipstone` plugin in order for Skip to generate gradle build for the native module.
+
+
+```swift
+// swift-tools-version: 5.9
+import PackageDescription
+
+let package = Package(
+    name: "skip-c-demo",
+    defaultLocalization: "en",
+    platforms: [.iOS(.v16), .macOS(.v13), .tvOS(.v16), .watchOS(.v9), .macCatalyst(.v16)],
+    products: [
+        .library(name: "SkipCDemo", type: .dynamic, targets: ["SkipCDemo"]),
+    ],
+    dependencies: [
+        .package(url: "https://source.skip.tools/skip.git", from: "0.7.40"),
+        .package(url: "https://source.skip.tools/skip-foundation.git", from: "0.0.0"),
+        .package(url: "https://source.skip.tools/skip-ffi.git", from: "0.0.0")
+    ],
+    targets: [
+        .target(name: "SkipCDemo", dependencies: [
+            "LibCLibrary",
+            .product(name: "SkipFoundation", package: "skip-foundation"),
+            .product(name: "SkipFFI", package: "skip-ffi")
+        ], plugins: [.plugin(name: "skipstone", package: "skip")]),
+
+        .testTarget(name: "SkipCDemoTests", dependencies: [
+            "SkipCDemo",
+            .product(name: "SkipTest", package: "skip")
+        ], plugins: [.plugin(name: "skipstone", package: "skip")]),
+
+        .target(name: "LibCLibrary", sources: ["src"], publicHeadersPath: "include", plugins: [.plugin(name: "skipstone", package: "skip")]),
+    ]
+)
+
+```
+
 
 ## Building
-
-This project is a free Swift Package Manager module that uses the
-[Skip](https://skip.tools) plugin to transpile Swift into Kotlin.
 
 Building the module requires that Skip be installed using 
 [Homebrew](https://brew.sh) with `brew install skiptools/skip/skip`.

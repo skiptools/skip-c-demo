@@ -29,6 +29,8 @@ let package = Package(
             .product(name: "SkipTest", package: "skip")
         ], plugins: [.plugin(name: "skipstone", package: "skip")]),
 
-        .target(name: "LibCLibrary", sources: ["src"], plugins: [.plugin(name: "skipstone", package: "skip")]),
+        .target(name: "LibCLibrary", sources: ["src"], cSettings: [
+            .define("SKIP_BUILD_NDK") // needed for Skip to add native gradle build support
+        ], plugins: [.plugin(name: "skipstone", package: "skip")]),
     ]
 )
