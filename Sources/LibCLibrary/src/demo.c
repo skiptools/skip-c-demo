@@ -16,20 +16,25 @@ double demo_compute(int n, double a, double b) {
     return result;
 }
 
-long add_with_assembly(long x, long y) {
-    long result = 0;
-    #ifdef __i386__ // Intel 32-bit
-    asm("add %1, %0" : "=r" (result) : "r" (x), "0" (y));
+short add_with_assembly(short a, short b) {
+    short result;
+
+    #if __aarch64__ // ARM 64-bit
+    asm volatile ("add %w[a], %w[a], %w[b]; mov %w[a], %w[result]"
+                : [result] "=r" (result)
+                : [a] "r" (a), [b] "r" (b)
+                : "cc");
+    #elif __i386__ // Intel 32-bit
+    result = a + b;
     #elif __x86_64__ // Intel 64-bit
-    asm("add %1, %0" : "=r" (result) : "r" (x), "0" (y));
+    result = a + b;
     #elif __arm__ // ARM 32-bit
-    asm("adds %0, %1, %2" : "=r" (result) : "r" (x), "r" (y));
-    #elif __aarch64__ // ARM 64-bit
-    asm("add %0, %1, %2" : "=r" (result) : "r" (x), "r" (y));
+    result = a + b;
     #elif __riscv_64 // RISC-V 64-bit (future)
-    asm("add %0, %1, %2" : "=r" (result) : "r" (x), "r" (y));
+    result = a + b;
     #else
     #error "Unsupported architecture"
     #endif
+
     return result;
 }
