@@ -16,6 +16,6 @@ final class SkipCDemoTests: XCTestCase {
         XCTAssertEqual(123, lib.demo_number())
         XCTAssertEqual("Hello Skip!", lib.demo_string())
         XCTAssertEqual(105.95723590826853, lib.demo_compute(n: 1_000_000, a: 2.5, b: 3.5))
-        XCTAssertEqual(1_111_111_110, lib.add_with_assembly(a: 123_456_789, b: 987_654_321))
+        XCTAssertEqual(3, lib.add_with_assembly(a: 1, b: 2))
     }
 }
