@@ -18,20 +18,18 @@ double demo_compute(int n, double a, double b) {
 
 long add_with_assembly(long x, long y) {
     long result;
-
     #ifdef __i386__ // Intel 32-bit
-    __asm__ volatile ("addl %1, %0" : "=r" (result) : "r" (x), "0" (y));
+    asm("add %1, %0" : "=r" (result) : "r" (x), "0" (y));
     #elif __x86_64__ // Intel 64-bit
-    __asm__ volatile ("addq %1, %0;" : "=r" (result) : "r" (x), "0" (y));
+    asm("add %1, %0" : "=r" (result) : "r" (x), "0" (y));
     #elif __arm__ // ARM 32-bit
-    __asm__ volatile ("adds %0, %1, %2" : "=r" (result) : "r" (x), "r" (y));
+    asm("adds %0, %1, %2" : "=r" (result) : "r" (x), "r" (y));
     #elif __aarch64__ // ARM 64-bit
-    __asm__ volatile ("add %0, %1, %2" : "=r" (result) : "r" (x), "r" (y));
+    asm("add %0, %1, %2" : "=r" (result) : "r" (x), "r" (y));
     #elif __riscv_64 // RISC-V 64-bit (future)
-    __asm__ volatile ("add %0, %1, %2" : "=r" (result) : "r" (x), "r" (y));
+    asm("add %0, %1, %2" : "=r" (result) : "r" (x), "r" (y));
     #else
     #error "Unsupported architecture"
     #endif
-
     return result;
 }
