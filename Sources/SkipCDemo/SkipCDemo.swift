@@ -30,4 +30,8 @@ internal final class DemoLibrary {
     /* SKIP EXTERN */ public func demo_compute(n: Int32, a: Double, b: Double) -> Double {
         return LibCLibrary.demo_compute(n, a, b)
     }
+
+    /* SKIP EXTERN */ public func add_with_assembly(a: Int64, b: Int64) -> Int64 {
+        return Int64(LibCLibrary.add_with_assembly(Int(a), Int(b)))
+    }
 }
