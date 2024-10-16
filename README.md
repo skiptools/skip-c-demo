@@ -68,9 +68,9 @@ let package = Package(
         .library(name: "SkipCDemo", type: .dynamic, targets: ["SkipCDemo"]),
     ],
     dependencies: [
-        .package(url: "https://source.skip.tools/skip.git", from: "0.7.40"),
-        .package(url: "https://source.skip.tools/skip-foundation.git", from: "0.0.0"),
-        .package(url: "https://source.skip.tools/skip-ffi.git", from: "0.0.0")
+        .package(url: "https://source.skip.tools/skip.git", from: "1.0.0"),
+        .package(url: "https://source.skip.tools/skip-foundation.git", from: "1.0.0"),
+        .package(url: "https://source.skip.tools/skip-ffi.git", from: "1.0.0")
     ],
     targets: [
         .target(name: "SkipCDemo", dependencies: [
