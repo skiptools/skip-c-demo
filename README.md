@@ -1,6 +1,6 @@
 # SkipCDemo
 
-This is a [Skip](https://skip.tools) Swift/Kotlin library project demonstrating the use of C code from Swift on both Darwin (iOS & macOS) and Android. It utilizes Swift's built-in C integration on the Swift side, and takes advantage of gradle's support for building with the Android NDK using the cmake build tool on the Kotlin side. 
+This is a [Skip](https://skip.dev) Swift/Kotlin library project demonstrating the use of C code from Swift on both Darwin (iOS & macOS) and Android. It utilizes Swift's built-in C integration on the Swift side, and takes advantage of gradle's support for building with the Android NDK using the cmake build tool on the Kotlin side. 
 
 The C code is called from the transpiled Kotlin using Java Native Access (JNA). A JNA direct mapping class `SkipCDemo.swift` contains the library's functions, marked with `SKIP EXTERN` to cause the Skip transpiler to annotate the functions so JNA lines them up with the equivalent C functions.
 
@@ -68,9 +68,9 @@ let package = Package(
         .library(name: "SkipCDemo", type: .dynamic, targets: ["SkipCDemo"]),
     ],
     dependencies: [
-        .package(url: "https://source.skip.tools/skip.git", from: "1.0.0"),
-        .package(url: "https://source.skip.tools/skip-foundation.git", from: "1.0.0"),
-        .package(url: "https://source.skip.tools/skip-ffi.git", from: "1.0.0")
+        .package(url: "https://source.skip.dev/skip.git", from: "1.0.0"),
+        .package(url: "https://source.skip.dev/skip-foundation.git", from: "1.0.0"),
+        .package(url: "https://source.skip.dev/skip-ffi.git", from: "1.0.0")
     ],
     targets: [
         .target(name: "SkipCDemo", dependencies: [
