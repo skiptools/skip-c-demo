@@ -93,10 +93,7 @@ let package = Package(
 
 ## Building
 
-Building the module requires that Skip be installed using 
-[Homebrew](https://brew.sh) with `brew install skiptools/skip/skip`.
-This will also install the necessary build prerequisites:
-Kotlin, Gradle, and the Android build tools.
+Building the module requires that [Skip](https://skip.dev) be installed.
 
 ## Testing
 
