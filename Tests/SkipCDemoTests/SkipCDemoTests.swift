@@ -4,7 +4,7 @@ import XCTest
 import Foundation
 @testable import SkipCDemo
 
-fileprivate let lib: DemoLibrary = DemoLibrary.instance
+nonisolated(unsafe) fileprivate let lib: DemoLibrary = DemoLibrary.instance
 
 final class SkipCDemoTests: XCTestCase {
     func testSkipCDemo() throws {

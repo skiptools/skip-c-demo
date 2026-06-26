@@ -57,7 +57,7 @@ and add the `skipstone` plugin in order for Skip to generate gradle build for th
 
 
 ```swift
-// swift-tools-version: 5.9
+// swift-tools-version: 6.1
 import PackageDescription
 
 let package = Package(

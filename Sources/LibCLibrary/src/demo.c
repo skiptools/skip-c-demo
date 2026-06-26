@@ -20,18 +20,32 @@ short add_with_assembly(short a, short b) {
     short result;
 
     #if __aarch64__ // ARM 64-bit
-    asm volatile ("add %w[a], %w[a], %w[b]; mov %w[a], %w[result]"
+    // add the two source W (32-bit) registers, writing the sum to the result register
+    asm ("add %w[result], %w[a], %w[b]"
                 : [result] "=r" (result)
-                : [a] "r" (a), [b] "r" (b)
-                : "cc");
+                : [a] "r" (a), [b] "r" (b));
     #elif __i386__ // Intel 32-bit
-    result = a + b;
+    // tie `a` into the result register, then add `b` into it (AT&T order: addw src, dst)
+    asm ("addw %[b], %[result]"
+                : [result] "=r" (result)
+                : [b] "r" (b), "0" (a)
+                : "cc");
     #elif __x86_64__ // Intel 64-bit
-    result = a + b;
+    // tie `a` into the result register, then add `b` into it (AT&T order: addw src, dst)
+    asm ("addw %[b], %[result]"
+                : [result] "=r" (result)
+                : [b] "r" (b), "0" (a)
+                : "cc");
     #elif __arm__ // ARM 32-bit
-    result = a + b;
-    #elif __riscv_64 // RISC-V 64-bit (future)
-    result = a + b;
+    // add Rn (a) and Rm (b), writing the sum to Rd (result)
+    asm ("add %[result], %[a], %[b]"
+                : [result] "=r" (result)
+                : [a] "r" (a), [b] "r" (b));
+    #elif defined(__riscv) && (__riscv_xlen == 64) // RISC-V 64-bit (future)
+    // add rs1 (a) and rs2 (b), writing the sum to rd (result)
+    asm ("add %[result], %[a], %[b]"
+                : [result] "=r" (result)
+                : [a] "r" (a), [b] "r" (b));
     #else
     #error "Unsupported architecture"
     #endif
